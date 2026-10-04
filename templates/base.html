@@ -26,7 +26,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Geist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="preload" as="image" href="{{ get_url(path='shigure-ui-dance.gif') }}">
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Geist+Pixel&family=Geist:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lilita+One&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/comic-mono@0.0.1/index.css" rel="stylesheet">
     <script src="{{ get_url(path="js/threshold.js") }}" defer></script>
@@ -127,6 +126,7 @@
             let running = false;
             let images = [];
             let lastColor = null;
+            const snowDisabled = new URLSearchParams(location.search).has("nosnow");
 
         const svgTemplates = [
             // 6-pointed snowflake
@@ -179,12 +179,28 @@
             </svg>`
         ];
 
+            // Rasterize each SVG once into an offscreen bitmap and draw that every
+            // frame. Drawing SVG images (esp. ones with <mask>/<use>) straight into
+            // the canvas 100x per frame can produce GPU glitches such as black boxes.
+            const SPRITE_PX = 48;
             function loadImages(color) {
+                const token = {};
+                loadImages.token = token;
                 images = svgTemplates.map(template => {
                     const svgString = template.replace(/{color}/g, color);
+                    const sprite = document.createElement("canvas");
+                    sprite.width = sprite.height = SPRITE_PX;
+                    sprite.complete = false;
                     const img = new Image();
+                    img.onload = () => {
+                        if (loadImages.token !== token) return;
+                        const sctx = sprite.getContext("2d");
+                        sctx.clearRect(0, 0, SPRITE_PX, SPRITE_PX);
+                        sctx.drawImage(img, 0, 0, SPRITE_PX, SPRITE_PX);
+                        sprite.complete = true;
+                    };
                     img.src = "data:image/svg+xml," + encodeURIComponent(svgString);
-                    return img;
+                    return sprite;
                 });
             }
 
@@ -269,7 +285,7 @@
             }
 
             function startSnow() {
-                if (motionQuery.matches || running) return;
+                if (motionQuery.matches || snowDisabled || running) return;
                 canvas.style.display = "block";
                 resize();
                 createSnowflakes();
@@ -278,7 +294,8 @@
             }
 
             window.addEventListener("resize", resize);
-            if (motionQuery.matches) stopSnow();
+            // Diagnostic: add ?nosnow to any URL to disable the snow for that visit.
+            if (motionQuery.matches || snowDisabled) stopSnow();
             else startSnow();
 
             motionQuery.addEventListener("change", () => {

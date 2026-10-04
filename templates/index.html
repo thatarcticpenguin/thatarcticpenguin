@@ -116,6 +116,11 @@
             width: 0;
             height: 0;
             display: block;
+            /* .socials is a <nav>, so it inherits the global nav padding and
+               background, which painted a ~51x45px page-colored box over the avatar */
+            padding: 0;
+            margin: 0;
+            background: none;
         }
 
         .socials a {
@@ -155,7 +160,9 @@
 
         .homepage-banner {
             position: absolute;
-            top: -80px;
+            /* anchor by the bottom edge so it always sits above the title,
+               regardless of image height or load timing */
+            bottom: calc(100% - 28px);
             left: calc(100% + 64px);
             width: 544px;
             height: auto;
@@ -301,16 +308,14 @@
                 transform: scale(1.1);
             }
             .homepage-banner {
-                position: absolute;
-                bottom: 0;
-                left: 50%;
-                transform: translateX(-50%);
+                position: static;
+                bottom: auto;
+                transform: none;
                 width: 100%;
                 max-width: 400px;
-                margin: 0;
+                margin: 0 auto;
                 display: block;
-                z-index: 10;
-                top: auto;
+                z-index: auto;
             }
             .homepage-copy {
                 position: static;

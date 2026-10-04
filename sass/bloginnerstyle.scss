@@ -5,6 +5,7 @@
 }
 
 :root {
+    view-transition-name: root;
     --text-xs: .75rem;
     --text-xs--line-height: calc(1 / .75);
     --text-sm: .875rem;
@@ -127,7 +128,7 @@ body {
     font-weight: var(--font-weight-medium);
     font-style: normal;
     line-height: 1.6;
-    padding: 20px;
+    padding: 5.2rem 20px 20px;
 }
 
 .container {
@@ -139,12 +140,20 @@ body {
 
 /* Shared site navigation. Keep this in sync with base.html. */
 nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     gap: 1.6rem;
     margin: 0 0 2.4rem;
+    padding: 20px;
+    background: var(--bg-color);
     font-size: 0.96rem;
 }
 
@@ -306,7 +315,7 @@ html[data-theme="dark"] .moon-icon path {
 }
 
 .mobile-menu-overlay {
-    position: absolute;
+    position: fixed;
     top: 4.5rem;
     right: 1.6rem;
     width: auto;
@@ -389,6 +398,18 @@ h1 {
 
 .content {
     max-width: 900px;
+}
+
+.content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Diagrams are light-themed images; invert them in dark mode so the theme
+   transition mask visibly sweeps across them instead of appearing behind them. */
+html[data-theme="dark"] .content img.theme-aware {
+    filter: invert(1) hue-rotate(180deg);
 }
 
 .content p, .content li {
@@ -532,7 +553,7 @@ h2, h3, h4 {
 
 
     body {
-        padding: 15px;
+        padding: 4.8rem 15px 15px;
     }
 
     h1 {
@@ -548,6 +569,43 @@ html.theme-toggled *,
 html.theme-toggled *::before,
 html.theme-toggled *::after {
     transition: none !important;
+}
+
+::view-transition {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483647;
+    pointer-events: none;
+    isolation: isolate;
+}
+
+::view-transition-group(root) {
+    position: absolute;
+    inset: 0;
+    z-index: 2147483647;
+}
+
+::view-transition-image-pair(root) {
+    position: absolute;
+    inset: 0;
+    z-index: 2147483647;
+    isolation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+    z-index: 0;
+}
+
+::view-transition-new(root) {
+    z-index: 1;
 }
 
 ::view-transition-group(root) {
