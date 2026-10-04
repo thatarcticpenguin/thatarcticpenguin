@@ -1251,6 +1251,13 @@ html[data-theme="light"] .not-found-title {
     margin-bottom: 2.5rem;
 }
 
+.not-found-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .not-found-link {
     display: inline-block;
     padding: 0.8rem 1.6rem;
