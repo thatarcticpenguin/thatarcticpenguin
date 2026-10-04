@@ -2,32 +2,6 @@
 {% block content %}
 {% set garden = load_data(path="data/garden.toml") %}
 {% set categories = ["all", "anime", "tv", "movies", "books", "games"] %}
-{% set_global top1_score = -1 %}
-{% set_global top1_title = "" %}
-{% set_global top2_score = -1 %}
-{% set_global top2_title = "" %}
-{% set_global top3_score = -1 %}
-{% set_global top3_title = "" %}
-
-{% for item in garden.items %}
-    {% if item.score is defined and item.score > top1_score %}
-        {% set_global top1_score = item.score %}
-        {% set_global top1_title = item.title %}
-    {% endif %}
-{% endfor %}
-{% for item in garden.items %}
-    {% if item.score is defined and item.title != top1_title and item.score > top2_score %}
-        {% set_global top2_score = item.score %}
-        {% set_global top2_title = item.title %}
-    {% endif %}
-{% endfor %}
-{% for item in garden.items %}
-    {% if item.score is defined and item.title != top1_title and item.title != top2_title and item.score > top3_score %}
-        {% set_global top3_score = item.score %}
-        {% set_global top3_title = item.title %}
-    {% endif %}
-{% endfor %}
-
 <div class="container">
     <h1 class="garden-title">The Garden</h1>
     <p class="garden-subtext">The garden is a collection of movies and tv shows i have watched and their ratings out of 10. This is based on my personal experience and has no relation to IMdB. (totally unbiased fs)</p>
@@ -56,13 +30,17 @@
 
     <div class="garden-grid" aria-live="polite">
         {% for item in garden.items %}
-        <img data-src="{{ get_url(path=item.image) }}"
+        {% set threshold_image = item.image | replace(from=".jpg", to=".png") %}
+        <img src="{{ get_url(path="garden/thresholded/" ~ threshold_image) }}"
+             data-src="{{ get_url(path=item.image) }}"
+             data-threshold-src="{{ get_url(path="garden/thresholded/" ~ threshold_image) }}"
              width="220" height="350"
+             loading="lazy"
              data-threshold="{{ item.threshold }}"
              data-category="{{ item.category }}"
              {% if item.score is defined %}data-score="{{ item.score }}"{% endif %}
              {% if item.rating_label is defined %}data-rating="{{ item.rating_label }}"{% elif item.score is defined %}data-rating="{{ item.score }}/10"{% endif %}
-             class="threshold-hover"
+             class="threshold-hover processed" style="opacity: 1;"
              alt="{{ item.title }}">
         {% endfor %}
     </div>

@@ -9,6 +9,7 @@ build_search_index = true
 
 title = "That Arctic Penguin"
 description = "Developer, ice cream enthusiast, and penguin lover. This is the personal site of Sabareesh Vinodh."
+default_language = "en"
 generate_feeds = true
 taxonomies = [
     { name = "tags", feed = true }

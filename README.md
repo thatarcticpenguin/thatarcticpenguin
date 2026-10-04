@@ -10,3 +10,6 @@ Hi.
 
 ### Development note
 Zola may require restarting `zola serve` after edits to `data/garden.toml` if the data file is not picked up by live reload.
+
+
+Garden poster threshold images are precomputed by `scripts/threshold.py`; the browser-side canvas path remains as a fallback.

@@ -39,20 +39,26 @@ async function loadOriginal(original) {
 
 async function processPoster(wrapper) {
     const img = wrapper.querySelector('img.threshold-hover');
-    if (!img || img.dataset.processed || !img.dataset.src) return;
+    if (!img || img.dataset.processed) return;
 
     img.dataset.loading = 'true';
     try {
-        img.src = img.dataset.src;
-        img.style.opacity = '1';
-        if (!img.complete) await img.decode().catch(() => {});
-        if (!img.naturalWidth) throw new Error('poster failed to load');
-
-        img.src = thresholdImage(img);
+        const thresholdSrc = img.dataset.thresholdSrc;
+        if (thresholdSrc) {
+            img.src = thresholdSrc;
+            if (!img.complete) await img.decode().catch(() => {});
+            if (!img.naturalWidth) throw new Error('thresholded poster failed to load');
+        } else if (img.dataset.src) {
+            img.src = img.dataset.src;
+            if (!img.complete) await img.decode().catch(() => {});
+            if (!img.naturalWidth) throw new Error('poster failed to load');
+            img.src = thresholdImage(img);
+        }
         img.dataset.processed = 'true';
         img.classList.add('processed');
     } catch (error) {
-        img.src = img.dataset.src;
+        if (img.dataset.src) img.src = img.dataset.src;
+        img.dataset.processed = 'true';
         img.classList.add('processed');
     } finally {
         delete img.dataset.loading;
@@ -104,9 +110,8 @@ function setupThresholdImages() {
 
         const posterSrc = img.dataset.src;
         grid.insertBefore(wrapper, img);
-        img.removeAttribute('src');
         wrapper.appendChild(img);
-        img.style.opacity = '0';
+        img.classList.add('processed');
 
         const original = document.createElement('img');
         original.className = 'original-hover';
@@ -114,6 +119,17 @@ function setupThresholdImages() {
         original.dataset.src = posterSrc;
         original.dataset.threshold = img.dataset.threshold || '20';
         wrapper.appendChild(original);
+
+        if (img.dataset.thresholdSrc) {
+            const thresholdSrc = img.dataset.thresholdSrc;
+            const handleThresholdError = () => {
+                if (img.src !== thresholdSrc || !posterSrc) return;
+                img.src = posterSrc;
+                img.classList.add('processed');
+                img.removeEventListener('error', handleThresholdError);
+            };
+            img.addEventListener('error', handleThresholdError);
+        }
 
         if (img.dataset.rating) {
             const ratingBar = document.createElement('div');
@@ -135,7 +151,7 @@ function setupThresholdImages() {
             }
         });
 
-        observer.observe(wrapper);
+        if (!img.dataset.thresholdSrc) observer.observe(wrapper);
     });
 
     document.addEventListener('click', () => {

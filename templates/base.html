@@ -29,7 +29,7 @@
     <link rel="preload" as="image" href="{{ get_url(path='shigure-ui-dance.gif') }}">
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Geist+Pixel&family=Geist:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Lilita+One&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/comic-mono@0.0.1/index.css" rel="stylesheet">
-    <script src="{{ get_url(path="js/threshold.js") }}"></script>
+    <script src="{{ get_url(path="js/threshold.js") }}" defer></script>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -114,7 +114,7 @@
         window.SEARCH_ELASTICLUNR_URL = "{{ get_url(path="elasticlunr.min.js") }}";
         window.SEARCH_INDEX_URL = "{{ get_url(path="search_index.en.js") }}";
     </script>
-    <script src="{{ get_url(path="js/search.js") }}" defer></script>
+    <script src="{{ get_url(path="js/search.js") ~ "?v=20261004-2" }}" defer></script>
 
     <script>
         (function() {

@@ -25,12 +25,31 @@
             if (!window.elasticlunr) {
                 await loadScript(window.SEARCH_ELASTICLUNR_URL || '/elasticlunr.min.js');
             }
-            await loadScript(window.SEARCH_INDEX_URL || '/search_index.en.js');
-            rawSearchIndex = window.searchIndex;
-            if (!rawSearchIndex) throw new Error('Search index did not load');
+
+            const url = window.SEARCH_INDEX_URL || '/search_index.en.js';
+            const response = await fetch(url, {
+                credentials: 'same-origin',
+                cache: 'no-store'
+            });
+            if (!response.ok) {
+                throw new Error(`Search index request failed: ${response.status}`);
+            }
+
+            const source = await response.text();
+            const marker = 'window.searchIndex =';
+            const markerIndex = source.indexOf(marker);
+            if (markerIndex === -1) {
+                throw new Error('Search index format is invalid');
+            }
+
+            const serialized = source.slice(markerIndex + marker.length).trim().replace(/;\s*$/, '');
+            const rawSearchIndex = JSON.parse(serialized);
             index = window.elasticlunr.Index.load(rawSearchIndex);
             return index;
-        })();
+        })().catch(error => {
+            indexPromise = null;
+            throw error;
+        });
         return indexPromise;
     }
 
