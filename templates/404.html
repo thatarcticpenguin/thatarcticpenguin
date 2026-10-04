@@ -1,12 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %}<title>404 — That Arctic Penguin</title>{% endblock title %}
-
-{% block extra_head %}
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
-{% endblock extra_head %}
-
 {% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 <div class="container not-found-container">
     <h1 class="not-found-title">404</h1>
     <img src="{{ get_url(path='404-penguin.png') }}" alt="Sad Penguin" class="not-found-image">
@@ -15,5 +10,6 @@
         <a href="{{ get_url(path='/') }}" class="button-secondary not-found-link">&gt; Return Home</a>
         <a href="{{ get_url(path='blog/') }}" class="button-secondary not-found-link">&gt; Read the Blog</a>
     </div>
+    <a href="/" class="not-found-link">&gt; Return Home</a>
 </div>
 {% endblock content %}
