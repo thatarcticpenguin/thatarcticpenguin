@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}<title>#{{ term.name }} — {{ config.title }}</title>{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="blog-section-title">> #{{ term.name }}</h1>
+    <div class="blogs-list">
+        {% for page in term.pages %}
+        <div class="blog-item">
+            <div class="blog-item-header">
+                <a href="{{ page.permalink | safe }}" class="blog-item-link blog-item-title">{{ page.title }}</a>
+                {% if page.taxonomies.tags %}
+                <span class="blog-item-tags">
+                    {% for tag in page.taxonomies.tags %}
+                    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="blog-inline-tag">#{{ tag }}</a>
+                    {% endfor %}
+                </span>
+                {% endif %}
+            </div>
+            {% if page.extra.subtitle %}
+            <div class="blog-item-subtext">{{ page.extra.subtitle }}</div>
+            {% elif page.description %}
+            <div class="blog-item-subtext">{{ page.description }}</div>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="blog-empty-msg">no posts with this tag yet :|</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

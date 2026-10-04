@@ -1,0 +1,69 @@
+[[items]]
+title = "Odyssey Banner"
+image = "odyssey.jpg"
+category = "movies"
+threshold = 25
+score = 9.5
+
+[[items]]
+title = "Project Hail Mary Banner"
+image = "projecthailmary.jpg"
+category = "movies"
+threshold = 70
+score = 9.6
+
+[[items]]
+title = "Avatar: The Way of Water Banner"
+image = "avatarwayofwater.jpg"
+category = "movies"
+threshold = 90
+score = 8.2
+
+[[items]]
+title = "How to Train Your Dragon Banner"
+image = "httyd.jpg"
+category = "movies"
+threshold = 80
+score = 9.4
+
+[[items]]
+title = "F1 The Movie Banner"
+image = "f1themovie.jpg"
+category = "movies"
+threshold = 200
+score = 8.8
+
+[[items]]
+title = "Finding Nemo Banner"
+image = "findingnemo.jpg"
+category = "movies"
+threshold = 120
+score = 9.0
+
+[[items]]
+title = "Dhurandhar Banner"
+image = "dhurandhar.jpg"
+category = "movies"
+threshold = 70
+score = 9.1
+
+[[items]]
+title = "Loki Banner"
+image = "loki.jpg"
+category = "tv"
+threshold = 70
+score = 9.1
+
+[[items]]
+title = "Spider-Man: No Way Home Banner"
+image = "spidermanbnd.jpg"
+category = "movies"
+threshold = 80
+score = 9.2
+
+[[items]]
+title = "Slop Levelling Banner"
+image = "sloplevelling.jpg"
+category = "anime"
+threshold = 90
+score = -10

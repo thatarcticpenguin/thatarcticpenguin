@@ -1,59 +1,161 @@
 {% extends "base.html" %}
 {% block content %}
+{% set garden = load_data(path="data/garden.toml") %}
+{% set categories = ["all", "anime", "tv", "movies", "books", "games"] %}
+{% set_global top1_score = -1 %}
+{% set_global top1_title = "" %}
+{% set_global top2_score = -1 %}
+{% set_global top2_title = "" %}
+{% set_global top3_score = -1 %}
+{% set_global top3_title = "" %}
+
+{% for item in garden.items %}
+    {% if item.score is defined and item.score > top1_score %}
+        {% set_global top1_score = item.score %}
+        {% set_global top1_title = item.title %}
+    {% endif %}
+{% endfor %}
+{% for item in garden.items %}
+    {% if item.score is defined and item.title != top1_title and item.score > top2_score %}
+        {% set_global top2_score = item.score %}
+        {% set_global top2_title = item.title %}
+    {% endif %}
+{% endfor %}
+{% for item in garden.items %}
+    {% if item.score is defined and item.title != top1_title and item.title != top2_title and item.score > top3_score %}
+        {% set_global top3_score = item.score %}
+        {% set_global top3_title = item.title %}
+    {% endif %}
+{% endfor %}
+
 <div class="container">
     <h1 class="garden-title">The Garden</h1>
     <p class="garden-subtext">The garden is a collection of movies and tv shows i have watched and their ratings out of 10. This is based on my personal experience and has no relation to IMdB. (totally unbiased fs)</p>
-    <div class="garden-filters">
-        <button class="garden-filter-btn button-secondary" data-filter="all">All</button>
-        <button class="garden-filter-btn button-primary" data-filter="anime">Anime</button>
-        <button class="garden-filter-btn button-primary" data-filter="tv">TV</button>
-        <button class="garden-filter-btn button-primary" data-filter="movies">Movies</button>
-        <button class="garden-filter-btn button-primary" data-filter="books">Books</button>
-        <button class="garden-filter-btn button-primary" data-filter="games">Games</button>
+
+    <div class="garden-controls">
+        <div class="garden-filters" role="group" aria-label="Filter garden">
+            {% for category in categories %}
+                <button class="garden-filter-btn {% if category == 'all' %}button-secondary{% else %}button-primary{% endif %}" type="button" data-filter="{{ category }}" {% if category != "all" %}{% set_global has_category = false %}{% for item in garden.items %}{% if item.category == category %}{% set_global has_category = true %}{% endif %}{% endfor %}{% if not has_category %}aria-disabled="true"{% endif %}{% endif %}>{% if category == 'all' %}All{% elif category == 'anime' %}Anime{% elif category == 'tv' %}TV{% elif category == 'movies' %}Movies{% elif category == 'books' %}Books{% else %}Games{% endif %}</button>
+            {% endfor %}
+        </div>
+        <div class="garden-sort-dropdown">
+            <button class="garden-sort-trigger button-secondary" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="garden-sort-menu" aria-label="Sort garden">
+                <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 7h12M8 12h8M8 17h4"/>
+                    <path d="M4 6v13M4 19l-2-2M4 19l2-2"/>
+                </svg>
+                <span class="garden-sort-label">Default</span>
+            </button>
+            <div class="garden-sort-menu" id="garden-sort-menu" role="menu" hidden>
+                <button class="garden-sort-btn button-secondary" type="button" data-sort="default" role="menuitem">Default</button>
+                <button class="garden-sort-btn button-primary" type="button" data-sort="highest" role="menuitem">Highest rated</button>
+                <button class="garden-sort-btn button-primary" type="button" data-sort="lowest" role="menuitem">Lowest rated</button>
+            </div>
+        </div>
     </div>
 
-    <div class="garden-grid">
-        <img src="/odyssey.jpg" width="220" height="350" data-threshold="25" data-rating="9.5/10" data-category="movies" class="threshold-hover" alt="Odyssey Banner">
-        <img src="/projecthailmary.jpg" width="220" height="350" data-threshold="70" data-rating="9.6/10" data-category="movies" class="threshold-hover" alt="Project Hail Mary Banner">
-        <img src="/avatarwayofwater.jpg" width="220" height="350" data-threshold="90" data-rating="8.2/10" data-category="movies" class="threshold-hover" alt="Avatar: The Way of Water Banner">
-        <img src="/httyd.jpg" width="220" height="350" data-threshold="80" data-rating="9.4/10" data-category="movies" class="threshold-hover" alt="How to Train Your Dragon Banner">
-        <img src="/f1themovie.jpg" width="220" height="350" data-threshold="200" data-rating="8.8/10" data-category="movies" class="threshold-hover" alt="F1 The Movie Banner">
-        <img src="/findingnemo.jpg" width="220" height="350" data-threshold="120" data-rating="9.0/10" data-category="movies" class="threshold-hover" alt="Finding Nemo Banner">
-        <img src="/dhurandhar.jpg" width="220" height="350" data-threshold="70" data-rating="9.1/10" data-category="movies" class="threshold-hover" alt="Dhurandhar Banner">
-        <img src="/loki.jpg" width="220" height="350" data-threshold="70" data-rating="9.1/10" data-category="tv" class="threshold-hover" alt="Loki Banner">
-        <img src="/spidermanbnd.jpg" width="220" height="350" data-threshold="80" data-rating="9.2/10" data-category="movies" class="threshold-hover" alt="Spider-Man: No Way Home Banner">
-        <img src="/sloplevelling.jpg" width="220" height="350" data-threshold="90" data-rating="slop/10" data-category="anime" class="threshold-hover" alt="Slop Levelling Banner">
+    <div class="garden-grid" aria-live="polite">
+        {% for item in garden.items %}
+        <img data-src="{{ get_url(path=item.image) }}"
+             width="220" height="350"
+             data-threshold="{{ item.threshold }}"
+             data-category="{{ item.category }}"
+             {% if item.score is defined %}data-score="{{ item.score }}"{% endif %}
+             {% if item.rating_label is defined %}data-rating="{{ item.rating_label }}"{% elif item.score is defined %}data-rating="{{ item.score }}/10"{% endif %}
+             class="threshold-hover"
+             alt="{{ item.title }}">
+        {% endfor %}
     </div>
+    <p class="garden-empty-msg blog-empty-msg" hidden>nothing here for this filter :|</p>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const initGarden = () => {
     const filterButtons = document.querySelectorAll('.garden-filter-btn');
+    const sortTrigger = document.querySelector('.garden-sort-trigger');
+    const sortMenu = document.querySelector('.garden-sort-menu');
+    const sortLabel = document.querySelector('.garden-sort-label');
+    const sortButtons = document.querySelectorAll('.garden-sort-btn');
+    const grid = document.querySelector('.garden-grid');
+    const emptyState = document.querySelector('.garden-empty-msg');
+    let activeFilter = 'all';
+    let activeSort = 'default';
+    const defaultOrder = [...grid.querySelectorAll('.threshold-hover-wrapper')];
+    if (!defaultOrder.length) {
+        requestAnimationFrame(initGarden);
+        return;
+    }
+
+    function applyView() {
+        const items = [...grid.querySelectorAll('.threshold-hover-wrapper')];
+
+        items.forEach(item => {
+            const category = (item.dataset.category || '').trim().toLowerCase();
+            const matches = activeFilter === 'all' || category === activeFilter;
+            item.hidden = !matches;
+        });
+
+        if (activeSort === 'default') {
+            defaultOrder.forEach(item => grid.appendChild(item));
+        } else {
+            items.sort((a, b) => {
+                const aScore = Number(a.dataset.score);
+                const bScore = Number(b.dataset.score);
+                const aMissing = !Number.isFinite(aScore);
+                const bMissing = !Number.isFinite(bScore);
+                if (aMissing && bMissing) return 0;
+                if (aMissing) return 1;
+                if (bMissing) return -1;
+                return activeSort === 'highest' ? bScore - aScore : aScore - bScore;
+            }).forEach(item => grid.appendChild(item));
+        }
+
+        const visibleItems = items.filter(item => !item.hidden);
+        const hasVisibleItems = visibleItems.length > 0;
+        emptyState.hidden = hasVisibleItems;
+    }
+
+    function closeSortMenu() {
+        sortMenu.hidden = true;
+        sortTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    sortTrigger.addEventListener('click', () => {
+        const open = sortMenu.hidden;
+        sortMenu.hidden = !open;
+        sortTrigger.setAttribute('aria-expanded', String(open));
+    });
 
     filterButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const filter = btn.dataset.filter.toLowerCase();
-
-            // Update active button state
+            activeFilter = btn.dataset.filter.toLowerCase();
             filterButtons.forEach(b => {
-                b.classList.remove('button-secondary');
-                b.classList.add('button-primary');
+                b.classList.toggle('button-secondary', b === btn);
+                b.classList.toggle('button-primary', b !== btn);
             });
-            btn.classList.remove('button-primary');
-            btn.classList.add('button-secondary');
-
-            // Show / hide garden grid elements
-            const items = document.querySelectorAll('.garden-grid > *');
-            items.forEach(item => {
-                const cat = (item.dataset.category || '').toLowerCase();
-                if (filter === 'all' || cat === filter) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+            applyView();
         });
     });
+
+    sortButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            activeSort = btn.dataset.sort;
+            sortLabel.textContent = btn.textContent;
+            sortButtons.forEach(b => {
+                b.classList.toggle('button-secondary', b === btn);
+                b.classList.toggle('button-primary', b !== btn);
+            });
+            closeSortMenu();
+            applyView();
+        });
+    });
+
+    document.addEventListener('click', event => {
+        if (!event.target.closest('.garden-sort-dropdown')) closeSortMenu();
+    });
+    };
+    initGarden();
 });
 </script>
 

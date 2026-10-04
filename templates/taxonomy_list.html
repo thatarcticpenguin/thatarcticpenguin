@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Tags — {{ config.title }}</title>{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="blog-section-title">> tags</h1>
+    <div class="blogs-list">
+        {% for term in terms %}
+        <div class="blog-item">
+            <div class="blog-item-header">
+                <a href="{{ term.permalink | safe }}" class="blog-item-link blog-item-title">{{ term.name }}</a>
+                <span class="blog-item-subtext">{{ term.pages | length }} post{% if term.pages | length != 1 %}s{% endif %}</span>
+            </div>
+        </div>
+        {% else %}
+        <p class="blog-empty-msg">no tags yet :|</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

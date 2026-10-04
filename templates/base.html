@@ -13,8 +13,9 @@
     <meta property="og:url" content="{% if current_url %}{{ current_url | safe }}{% else %}{{ get_url(path='/') }}{% endif %}">
     <meta property="og:type" content="profile">
     <meta name="twitter:card" content="summary_large_image">
-    {% block title %}<title>That Arctic Penguin - Sabareesh Vinodh</title>{% endblock title %}
+    {% block title %}<title>{{ config.title }} - Sabareesh Vinodh</title>{% endblock title %}
     <link rel="stylesheet" href="{{ get_url(path='blogpagestyle.css') }}">
+    <link rel="stylesheet" href="{{ get_url(path='search.css') }}">
     <link rel="alternate" type="application/atom+xml" href="{{ get_url(path='atom.xml') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="{{ get_url(path='favicon.ico') }}"/>
@@ -67,6 +68,7 @@
         <a href="/" class="penguin-logo">&gt; Penguin</a>
         <div class="right">
             <div class="desktop-links">
+                <button class="search-trigger" type="button" aria-label="Search" title="Search (Ctrl+K)">⌕</button>
                 <a href="/blog">Blogs</a>
                 <a href="/garden">Garden</a>
                 <a href="/guestbook">Guestbook</a>
@@ -102,19 +104,29 @@
         <a href="/blog">Blogs</a>
         <a href="/garden">Garden</a>
         <a href="/guestbook">Guestbook</a>
+        <button class="search-trigger" type="button" aria-label="Search" title="Search (Ctrl+K)">⌕</button>
     </div>
 
     {% block content %}{% endblock %}
 
     <script src="{{ get_url(path="js/theme.js") }}"></script>
+    <script>
+        window.SEARCH_ELASTICLUNR_URL = "{{ get_url(path="elasticlunr.min.js") }}";
+        window.SEARCH_INDEX_URL = "{{ get_url(path="search_index.en.js") }}";
+    </script>
+    <script src="{{ get_url(path="js/search.js") }}" defer></script>
 
     <script>
         (function() {
             const canvas = document.getElementById("snow");
             const ctx = canvas.getContext("2d");
-
-        let width, height;
-        let snowflakes = [];
+            const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+            let width, height;
+            let snowflakes = [];
+            let animationFrame = null;
+            let running = false;
+            let images = [];
+            let lastColor = null;
 
         const svgTemplates = [
             // 6-pointed snowflake
@@ -167,102 +179,117 @@
             </svg>`
         ];
 
-        let images = [];
-        let lastColor = null;
-
-        function loadImages(color) {
-            images = svgTemplates.map(template => {
-                const svgString = template.replace(/{color}/g, color);
-                const img = new Image();
-                img.src = "data:image/svg+xml," + encodeURIComponent(svgString);
-                return img;
-            });
-        }
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener("resize", resize);
-        resize();
-
-        function createSnowflakes() {
-            // Heavily reduce count on mobile for performance
-            const count = window.innerWidth < 768 ? 30 : 100;
-            snowflakes = [];
-            for (let i = 0; i < count; i++) {
-                snowflakes.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    size: Math.random() * 12 + 8,
-                    speedY: Math.random() * 1.5 + 1,
-                    speedX: Math.random() * 1 - 0.5,
-                    rotation: Math.random() * 360,
-                    rotationSpeed: Math.random() * 2 - 1,
-                    imageIndex: Math.floor(Math.random() * svgTemplates.length)
+            function loadImages(color) {
+                images = svgTemplates.map(template => {
+                    const svgString = template.replace(/{color}/g, color);
+                    const img = new Image();
+                    img.src = "data:image/svg+xml," + encodeURIComponent(svgString);
+                    return img;
                 });
             }
-        }
-        createSnowflakes();
 
-        let currentThemeColor = document.documentElement.getAttribute('data-theme') === 'light' ? "rgba(100, 100, 100, 0.65)" : "rgba(255, 255, 255, 0.85)";
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
 
-        // Observe theme changes instead of checking every frame
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.attributeName === 'data-theme') {
-                    const theme = document.documentElement.getAttribute('data-theme');
-                    currentThemeColor = theme === 'light' ? "rgba(100, 100, 100, 0.65)" : "rgba(255, 255, 255, 0.85)";
+            function createSnowflakes() {
+                const count = window.innerWidth < 768 ? 30 : 100;
+                snowflakes = [];
+                for (let i = 0; i < count; i++) {
+                    snowflakes.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        size: Math.random() * 12 + 8,
+                        speedY: Math.random() * 1.5 + 1,
+                        speedX: Math.random() * 1 - 0.5,
+                        rotation: Math.random() * 360,
+                        rotationSpeed: Math.random() * 2 - 1,
+                        imageIndex: Math.floor(Math.random() * svgTemplates.length)
+                    });
                 }
+            }
+
+            let currentThemeColor = document.documentElement.getAttribute('data-theme') === 'light'
+                ? "rgba(100, 100, 100, 0.65)"
+                : "rgba(255, 255, 255, 0.85)";
+
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'data-theme') {
+                        const theme = document.documentElement.getAttribute('data-theme');
+                        currentThemeColor = theme === 'light'
+                            ? "rgba(100, 100, 100, 0.65)"
+                            : "rgba(255, 255, 255, 0.85)";
+                    }
+                });
             });
-        });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+            observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            
-            if (currentThemeColor !== lastColor) {
-                loadImages(currentThemeColor);
-                lastColor = currentThemeColor;
+            function draw() {
+                ctx.clearRect(0, 0, width, height);
+                if (currentThemeColor !== lastColor) {
+                    loadImages(currentThemeColor);
+                    lastColor = currentThemeColor;
+                }
+                for (let flake of snowflakes) {
+                    if (images[flake.imageIndex] && images[flake.imageIndex].complete) {
+                        ctx.save();
+                        ctx.translate(flake.x, flake.y);
+                        ctx.rotate(flake.rotation * Math.PI / 180);
+                        ctx.drawImage(images[flake.imageIndex], -flake.size / 2, -flake.size / 2, flake.size, flake.size);
+                        ctx.restore();
+                    }
+                }
+                move();
+                animationFrame = requestAnimationFrame(draw);
             }
 
-            for (let flake of snowflakes) {
-                if (images[flake.imageIndex] && images[flake.imageIndex].complete) {
-                    ctx.save();
-                    ctx.translate(flake.x, flake.y);
-                    ctx.rotate(flake.rotation * Math.PI / 180);
-                    ctx.drawImage(images[flake.imageIndex], -flake.size / 2, -flake.size / 2, flake.size, flake.size);
-                    ctx.restore();
+            function move() {
+                for (let flake of snowflakes) {
+                    flake.y += flake.speedY;
+                    flake.x += flake.speedX + Math.sin(flake.y * 0.01) * 0.4;
+                    flake.rotation += flake.rotationSpeed;
+                    if (flake.y > height + 20) {
+                        flake.y = -20;
+                        flake.x = Math.random() * width;
+                        flake.size = Math.random() * 12 + 8;
+                        flake.speedY = Math.random() * 1.5 + 1;
+                        flake.imageIndex = Math.floor(Math.random() * svgTemplates.length);
+                    }
                 }
             }
-            move();
-        }
 
-        function move() {
-            for (let flake of snowflakes) {
-                flake.y += flake.speedY;
-                flake.x += flake.speedX + Math.sin(flake.y * 0.01) * 0.4;
-                flake.rotation += flake.rotationSpeed;
-
-                if (flake.y > height + 20) {
-                    flake.y = -20;
-                    flake.x = Math.random() * width;
-                    flake.size = Math.random() * 12 + 8;
-                    flake.speedY = Math.random() * 1.5 + 1;
-                    flake.imageIndex = Math.floor(Math.random() * svgTemplates.length);
-                }
+            function stopSnow() {
+                running = false;
+                if (animationFrame) cancelAnimationFrame(animationFrame);
+                animationFrame = null;
+                canvas.style.display = "none";
+                ctx.clearRect(0, 0, width, height);
             }
-        }
 
-        function animate() {
-            draw();
-            requestAnimationFrame(animate);
-        }
-        animate();
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu-btn').classList.toggle('open');
-            document.getElementById('mobile-menu-overlay').classList.toggle('open');
-        });
+            function startSnow() {
+                if (motionQuery.matches || running) return;
+                canvas.style.display = "block";
+                resize();
+                createSnowflakes();
+                running = true;
+                draw();
+            }
+
+            window.addEventListener("resize", resize);
+            if (motionQuery.matches) stopSnow();
+            else startSnow();
+
+            motionQuery.addEventListener("change", () => {
+                if (motionQuery.matches) stopSnow();
+                else startSnow();
+            });
+
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu-btn').classList.toggle('open');
+                document.getElementById('mobile-menu-overlay').classList.toggle('open');
+            });
         })();
     </script>
 </body>

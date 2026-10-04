@@ -21,3 +21,12 @@ theme = "catppuccin-mocha"
 
 [extra]
 # Put all your custom variables here
+
+[search]
+include_title = true
+include_description = false
+include_date = false
+include_path = false
+include_content = true
+truncate_content_length = 500
+index_format = "elasticlunr_javascript"

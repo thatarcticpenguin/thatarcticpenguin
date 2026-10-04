@@ -1,6 +1,57 @@
+const maskAssets = {
+    dark: { path: '/bad-apple-mask-full.gif', buffer: null, loading: null },
+    light: { path: '/shigure-ui-dance.gif', buffer: null, loading: null }
+};
+let activeMaskUrl = null;
+
+function preloadMask(theme) {
+    const asset = maskAssets[theme];
+    if (asset.buffer) return Promise.resolve(asset.buffer);
+    if (asset.loading) return asset.loading;
+
+    asset.loading = fetch(asset.path, { cache: 'force-cache' })
+        .then(response => {
+            if (!response.ok) throw new Error(`Failed to load ${asset.path}`);
+            return response.arrayBuffer();
+        })
+        .then(buffer => {
+            asset.buffer = buffer;
+            return buffer;
+        })
+        .catch(() => null);
+
+    return asset.loading;
+}
+
+function setMask(theme, buffer) {
+    if (!buffer) {
+        document.documentElement.style.removeProperty('--current-mask-gif');
+        return null;
+    }
+
+    const url = URL.createObjectURL(new Blob([buffer], { type: 'image/gif' }));
+    document.documentElement.style.setProperty('--current-mask-gif', `url("${url}")`);
+    activeMaskUrl = url;
+    return url;
+}
+
+function clearMask() {
+    document.documentElement.style.removeProperty('--current-mask-gif');
+    if (activeMaskUrl) {
+        URL.revokeObjectURL(activeMaskUrl);
+        activeMaskUrl = null;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const toggleBtn = document.getElementById('theme-toggle');
     if (!toggleBtn) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+        preloadMask('dark');
+        preloadMask('light');
+    }
 
     // Inject the combined SVG switcher if not present
     if (!toggleBtn.querySelector('.solar-switch')) {
@@ -25,42 +76,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateToggleUI();
 
+    let transitionInProgress = false;
+
     toggleBtn.addEventListener('click', () => {
         (async () => {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
+            if (transitionInProgress) return;
+            transitionInProgress = true;
+
             // Add theme-toggled class to enable animations
             document.documentElement.classList.add('theme-toggled');
 
-            const noTransition = toggleBtn.hasAttribute('data-no-transition');
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const noTransition = reduceMotion || toggleBtn.hasAttribute('data-no-transition');
 
             if (noTransition || !document.startViewTransition) {
-                if (newTheme === 'dark') {
-                    document.documentElement.style.setProperty('--current-mask-gif', `url("/bad-apple-mask-full.gif?t=${Date.now()}")`);
-                } else {
-                    document.documentElement.style.removeProperty('--current-mask-gif');
-                }
+                clearMask();
                 await setTheme(newTheme);
                 document.documentElement.classList.remove('theme-toggled');
+                transitionInProgress = false;
                 return;
             }
 
-            if (newTheme === 'dark') {
-                const timestamp = Date.now();
-                const maskUrl = `/bad-apple-mask-full.gif?t=${timestamp}`;
-                const img = new Image();
-                img.src = maskUrl;
-                try {
-                    await new Promise((resolve, reject) => {
-                        img.onload = resolve;
-                        img.onerror = reject;
-                    });
-                } catch (e) {}
-                document.documentElement.style.setProperty('--current-mask-gif', `url("${maskUrl}")`);
-            } else {
-                document.documentElement.style.removeProperty('--current-mask-gif');
-            }
+            const maskBuffer = await preloadMask(newTheme);
+            clearMask();
+            setMask(newTheme, maskBuffer);
 
             const transition = document.startViewTransition(async () => {
                 await setTheme(newTheme);
@@ -71,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) {
                 // ignore
             } finally {
+                clearMask();
+                transitionInProgress = false;
                 document.documentElement.classList.remove('theme-toggled');
                 if (typeof refreshThresholdImages === "function") {
                     try {

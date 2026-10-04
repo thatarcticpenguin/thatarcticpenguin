@@ -122,7 +122,7 @@ nav {
 nav a {
     color: var(--subtitle-color);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: color 0.18s ease;
 }
 
 nav a:hover {
@@ -141,7 +141,7 @@ nav a:hover {
     color: #00c8ff;
     letter-spacing: 0.5px;
     text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: color 0.18s ease, text-shadow 0.18s ease;
 }
 
 .penguin-logo:hover {
@@ -157,7 +157,7 @@ html[data-theme="light"] .penguin-logo {
     color: var(--subtitle-color);
     text-decoration: none;
     font-size: 0.9rem;
-    transition: color 0.3s ease;
+    transition: color 0.18s ease;
     white-space: nowrap;
 }
 
@@ -176,7 +176,7 @@ html[data-theme="light"] .penguin-logo {
     color: #00c8ff;
     text-decoration: none;
     text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: color 0.18s ease, text-shadow 0.18s ease;
 }
 
 .desktop-links a:hover {
@@ -196,7 +196,7 @@ html[data-theme="light"] .desktop-links a {
     margin-left: 12px;
     cursor: pointer;
     color: var(--subtitle-color);
-    transition: color 0.3s ease;
+    transition: color 0.18s ease;
     z-index: 101;
     position: relative;
 }
@@ -211,7 +211,7 @@ html[data-theme="light"] .desktop-links a {
 
 .mobile-menu-btn line {
     transform-origin: center;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s ease-in-out;
+    transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.14s ease-in-out;
 }
 
 .mobile-menu-btn.open .line1 {
@@ -248,7 +248,7 @@ html[data-theme="light"] .desktop-links a {
     opacity: 0;
     pointer-events: none;
     transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.18s ease, transform 0.18s ease;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 
@@ -263,7 +263,7 @@ html[data-theme="light"] .desktop-links a {
     color: #00c8ff;
     text-decoration: none;
     text-shadow: 0 0 10px rgba(0, 200, 255, 0.35);
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    transition: color 0.18s ease, text-shadow 0.18s ease;
 }
 
 html[data-theme="light"] .mobile-menu-overlay a {
@@ -288,7 +288,7 @@ html[data-theme="light"] .mobile-menu-overlay a {
     display: flex;
     align-items: center;
     padding: 0;
-    transition: all 0.3s ease;
+    transition: all 0.18s ease;
     z-index: 101;
     position: relative;
 }
@@ -302,7 +302,7 @@ html[data-theme="light"] .mobile-menu-overlay a {
     height: 23px;
     border-radius: 50%;
     background: var(--text-color);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 html[data-theme="light"] .theme-toggle::before {
@@ -326,7 +326,7 @@ html[data-theme="dark"] .theme-toggle::before {
     left: 5.5px;
     color: var(--bg-color);
     z-index: 2;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 html[data-theme="light"] .solar-switch {
@@ -342,7 +342,7 @@ html[data-theme="dark"] .solar-switch {
     transform-box: view-box;
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
-    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), stroke-dashoffset 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-theme="light"] .sun-icon path {
@@ -354,13 +354,13 @@ html[data-theme="light"] .sun-icon path {
 html[data-theme="light"] .moon-icon path {
     transform: scale(1);
     stroke-dashoffset: 0;
-    transition-delay: 0s, 0.3s;
+    transition-delay: 0s, 0.18s;
 }
 
 html[data-theme="dark"] .sun-icon path {
     transform: scale(1);
     stroke-dashoffset: 0;
-    transition-delay: 0s, 0.3s;
+    transition-delay: 0s, 0.18s;
 }
 
 html[data-theme="dark"] .moon-icon path {
@@ -375,7 +375,7 @@ h1 {
     margin-bottom: 0.64rem;
     font-size: 2rem;
     letter-spacing: 1px;
-    transition: color 0.3s;
+    transition: color 0.18s;
 }
 
 .friend-banners-label {
@@ -396,7 +396,7 @@ h1 {
 .friend-banners a {
     display: block;
     height: 25px;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition: transform 0.14s ease, opacity 0.14s ease;
 }
 
 .friend-banners a:hover {
@@ -425,7 +425,7 @@ a.blog-item-link {
     color: var(--title-color);
     font-size: 1.05rem;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
     /* Create the stretched hit-area covering the parent .blog-item */
     &::after {
         content: '';
@@ -440,12 +440,13 @@ a.blog-item-link {
 }
 
 .blog-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     padding-bottom: 0.9rem;
     border-bottom: 1px solid var(--card-border);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.14s ease;
 }
 
 .blog-item-header {
@@ -459,7 +460,7 @@ a.blog-item-link {
     color: var(--title-color);
     font-size: 1.05rem;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
 }
 
 .blog-item-tags {
@@ -472,7 +473,7 @@ a.blog-inline-tag {
     color: #2781c4;
     font-size: 0.85rem;
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
     text-decoration: none;
     position: relative;
     z-index: 1;
@@ -485,14 +486,14 @@ a.blog-inline-tag {
     color: #2781c4;
     font-size: 0.85rem;
     font-weight: 500;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
 }
 
 .blog-item-subtext {
     color: var(--subtitle-color);
     font-size: 0.82rem;
     line-height: 1.4;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
 }
 
 .blog-tags {
@@ -508,7 +509,7 @@ a.blog-inline-tag {
     border-radius: 16px;
     font-size: 0.6rem;
     border: 1px solid var(--tag-border);
-    transition: all 0.3s ease;
+    transition: all 0.18s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3),
                 inset 0 1px 0 rgba(255, 165, 0, 0.1);
     position: relative;
@@ -523,7 +524,7 @@ a.blog-inline-tag {
     width: 100%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 165, 0, 0.2), transparent);
-    transition: left 0.5s ease;
+    transition: left 0.25s ease;
 }
 
 .blog-card:hover .tag {
@@ -592,7 +593,7 @@ a.blog-inline-tag {
 .built-with a {
     color: var(--subtitle-color);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.14s ease;
 }
 
 .built-with a:hover {
@@ -610,10 +611,6 @@ a.blog-inline-tag {
 }
 
 /* Animated Toggle Button SVG Styles */
-.theme-toggle {
-    view-transition-name: theme-toggle;
-}
-
 html.theme-toggled *,
 html.theme-toggled *::before,
 html.theme-toggled *::after {
@@ -726,15 +723,15 @@ html.blogpage[data-theme="dark"]::view-transition-old(root) {
     transform-box: view-box;
     stroke-dasharray: 1;
     stroke-dashoffset: 0;
-    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1),
-                stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke-dashoffset 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Static Initial Theme Styles & Transition Rules */
 html[data-theme="light"] .sun-icon path {
     transform: scale(1);
     stroke-dashoffset: 0;
-    transition-delay: 0s, 0.3s;
+    transition-delay: 0s, 0.18s;
 }
 
 html[data-theme="light"] .moon-icon path {
@@ -747,6 +744,105 @@ html[data-theme="dark"] .sun-icon path {
     transform: scale(0);
     stroke-dashoffset: 1;
     transition-delay: 0s, 0s;
+}
+
+
+.garden-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.garden-filters {
+    display: flex;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+}
+
+.garden-filter-btn[aria-disabled="true"] {
+    opacity: 0.45;
+}
+
+.garden-filter-btn,
+.garden-sort-btn {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.8125rem !important;
+    font-family: 'Geist Mono', monospace !important;
+}
+
+.garden-sort-dropdown {
+    position: relative;
+}
+
+.garden-sort-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+}
+
+.garden-sort-trigger svg {
+    flex: 0 0 auto;
+}
+
+.garden-sort-menu {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    right: 0;
+    z-index: 20;
+    display: grid;
+    gap: 0.25rem;
+    min-width: 150px;
+    padding: 0.35rem;
+    background: var(--bg-color);
+    border: 1px solid var(--meta-color);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.garden-sort-menu[hidden] {
+    display: none;
+}
+
+.garden-sort-menu .garden-sort-btn {
+    width: 100%;
+    text-align: left;
+}
+
+.garden-stats {
+    color: var(--meta-color);
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.garden-stat-counts,
+.garden-top-rated {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.garden-top-rated {
+    margin-top: 0.25rem;
+}
+
+.garden-empty-msg {
+    margin-top: 0;
+}
+
+.threshold-hover-wrapper img.threshold-hover {
+    opacity: 0;
+}
+
+.threshold-hover-wrapper img.threshold-hover.processed {
+    opacity: 1;
+}
+
+.threshold-hover-wrapper img.original-hover:not([src]) {
+    opacity: 0;
 }
 
 /* Garden poster grid */
@@ -763,18 +859,6 @@ html[data-theme="dark"] .sun-icon path {
     max-width: 100%;
 }
 
-.garden-filters {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1.5rem;
-}
-
-.garden-filter-btn {
-    padding: 0.35rem 0.75rem !important;
-    font-size: 0.8125rem !important;
-    font-family: 'Geist Mono', monospace !important;
-}
 
 .garden-grid {
     display: grid;
@@ -784,6 +868,10 @@ html[data-theme="dark"] .sun-icon path {
     justify-content: center;
     align-items: start;
     padding: 10px 0 40px 0;
+}
+
+.threshold-hover-wrapper[hidden] {
+    display: none !important;
 }
 
 .threshold-hover-wrapper {
@@ -820,7 +908,7 @@ img.threshold-hover.processed {
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.08s ease;
     pointer-events: none;
 }
 
@@ -844,6 +932,18 @@ img.threshold-hover.processed {
 }
 
 @media (max-width: 768px) {
+    .garden-controls {
+        align-items: flex-start;
+    }
+
+    .garden-filters {
+        gap: 0.3rem;
+    }
+
+    .garden-filter-btn {
+        padding: 0.3rem 0.55rem !important;
+    }
+
     .garden-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 14px;
@@ -956,7 +1056,7 @@ img.threshold-hover.processed {
     font-size: 0.875rem;
     margin-bottom: 0.625rem;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.14s ease;
 }
 
 #HCB_comment_box input[type="text"]:focus {
@@ -981,7 +1081,7 @@ img.threshold-hover.processed {
     font-size: 0.875rem;
     margin-bottom: 0.625rem;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.14s ease;
 }
 
 #HCB_comment_box textarea:focus {
@@ -1017,7 +1117,7 @@ img.threshold-hover.processed {
     border-radius: 0 !important;
     font-weight: 500 !important;
     margin-top: 0.25rem;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.14s ease;
 
     &:hover {
         opacity: 0.85 !important;
@@ -1125,7 +1225,7 @@ img.threshold-hover.processed {
 #HCB_comment_box b.author a {
     color: var(--h1-color) !important;
     text-decoration: underline !important;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.14s ease;
 }
 
 #HCB_comment_box .author-name a:hover,
@@ -1195,11 +1295,11 @@ img.threshold-hover.processed {
 html.blogpage:has(.guestbook-page)::view-transition-new(root) {
     mask-image: none !important;
     -webkit-mask-image: none !important;
-    animation: guestbook-fade-in 0.3s ease both !important;
+    animation: guestbook-fade-in 0.16s ease both !important;
 }
 
 html.blogpage:has(.guestbook-page)::view-transition-old(root) {
-    animation: guestbook-fade-out 0.3s ease both !important;
+    animation: guestbook-fade-out 0.16s ease both !important;
 }
 
 @keyframes guestbook-fade-in {
@@ -1268,7 +1368,7 @@ html[data-theme="light"] .not-found-title {
     border-radius: 8px;
     font-family: 'JetBrains Mono', monospace;
     font-weight: 500;
-    transition: all 0.3s var(--expo-in);
+    transition: all 0.18s var(--expo-in);
 }
 
 .not-found-link:hover {
@@ -1291,5 +1391,29 @@ html[data-theme="light"] .not-found-title {
     }
     .not-found-image {
         max-width: 240px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+    }
+
+    ::view-transition-group(root),
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none !important;
+    }
+
+    html.blogpage:has(.guestbook-page)::view-transition-new(root),
+    html.blogpage:has(.guestbook-page)::view-transition-old(root) {
+        animation: none !important;
+    }
+
+    .solar-switch path {
+        transition: none !important;
     }
 }

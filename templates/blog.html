@@ -18,13 +18,13 @@
         {% for page in section.pages %}
         {% if not page.extra.section or page.extra.section == "posts" %}
         {% set_global posts_count = posts_count + 1 %}
-        <div class="blog-item" style="position: relative;">
+        <div class="blog-item">
             <div class="blog-item-header">
                 <a href="{{ page.permalink | safe }}" class="blog-item-link blog-item-title">{{ page.title }}</a>
                 {% if page.taxonomies.tags %}
                 <span class="blog-item-tags">
                     {% for tag in page.taxonomies.tags %}
-                    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="blog-inline-tag" style="position: relative; z-index: 1;">#{{ tag }}</a>
+                    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="blog-inline-tag">#{{ tag }}</a>
                     {% endfor %}
                 </span>
                 {% endif %}
@@ -49,13 +49,13 @@
         {% for page in section.pages %}
         {% if page.extra.section == "learnings" %}
         {% set_global learnings_count = learnings_count + 1 %}
-        <div class="blog-item" style="position: relative;">
+        <div class="blog-item">
             <div class="blog-item-header">
                 <a href="{{ page.permalink | safe }}" class="blog-item-link blog-item-title">{{ page.title }}</a>
                 {% if page.taxonomies.tags %}
                 <span class="blog-item-tags">
                     {% for tag in page.taxonomies.tags %}
-                    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="blog-inline-tag" style="position: relative; z-index: 1;">#{{ tag }}</a>
+                    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="blog-inline-tag">#{{ tag }}</a>
                     {% endfor %}
                 </span>
                 {% endif %}
