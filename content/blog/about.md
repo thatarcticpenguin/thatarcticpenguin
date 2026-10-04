@@ -4,9 +4,11 @@ date = 2026-01-22
 
 [extra]
 section = "posts"
-tags = ["about","dev","life"]
 image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFuZc6MttR1PmHjyeLUL-19TClMTlXmKLLFYCASPFccg&s=10"
 subtitle = "Just stuff about me :D"
+
+[taxonomies]
+tags = ["about","dev","life"]
 +++
 
 Hey, I’m Penguin.

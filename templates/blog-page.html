@@ -4,8 +4,8 @@
 <h1 class="title">
   {{ page.title }}
 </h1>
-<div class="meta">{{ page.date }} | {% for tag in page.extra.tags %}
-    <span class="tag">#{{ tag }}</span>
+<div class="meta">{{ page.date }} | {% for tag in page.taxonomies.tags %}
+    <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}" class="tag">#{{ tag }}</a>
 {% endfor %}
 </div>
 <div class="content">

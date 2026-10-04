@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <link rel="canonical" href="{% if current_url %}{{ current_url | safe }}{% else %}{{ get_url(path='/') }}{% endif %}">
+    <link rel="icon" type="image/png" href="{{ get_url(path='favicon.ico') }}"/>
+    <link rel="alternate" type="application/atom+xml" href="{{ get_url(path='atom.xml') }}">
+    <title>{% if page.title %}{{ page.title }}{% else %}Blog{% endif %}</title>
     <script>
         (function() {
             const savedTheme = localStorage.getItem('theme') || 'dark';

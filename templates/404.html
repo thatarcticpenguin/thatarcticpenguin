@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+<div class="container not-found-container">
+    <h1 class="not-found-title">404</h1>
+    <img src="{{ get_url(path='404-penguin.png') }}" alt="Sad Penguin" class="not-found-image">
+    <p class="not-found-subtitle">I couldn't find the page you're looking for. You can't be that lost.</p>
+    <a href="/" class="not-found-link">&gt; Return Home</a>
+</div>
+{% endblock content %}

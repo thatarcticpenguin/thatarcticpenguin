@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}<title>Tags — That Arctic Penguin</title>{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="blog-main-title">&gt; tags</h1>
+    <p class="garden-subtext">All topics I've written about.</p>
+    <div class="blogs-list">
+        {% for term in terms %}
+        <div class="blog-item" style="position: relative;">
+            <div class="blog-item-header">
+                <a href="{{ term.permalink | safe }}" class="blog-item-link blog-item-title">#{{ term.name }}</a>
+                <span class="blog-item-tags">
+                    <span class="blog-inline-tag">{{ term.pages | length }} post{% if term.pages | length != 1 %}s{% endif %}</span>
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

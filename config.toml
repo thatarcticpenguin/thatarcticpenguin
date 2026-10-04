@@ -7,6 +7,13 @@ compile_sass = true
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
 
+title = "That Arctic Penguin"
+description = "Developer, ice cream enthusiast, and penguin lover. This is the personal site of Sabareesh Vinodh."
+generate_feeds = true
+taxonomies = [
+    { name = "tags", feed = true }
+]
+
 [markdown]
 
 [markdown.highlighting]
