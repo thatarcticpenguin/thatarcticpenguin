@@ -300,6 +300,12 @@ h2, h3, h4 {
     transition: background-color 0.3s, border-color 0.3s;
 }
 
+/* Zola's highlighter emits bare <pre> blocks; make them behave like .code-block */
+.content pre {
+    position: relative;
+    overflow-x: auto;
+}
+
 .code-header {
     color: var(--meta-color);
     font-size: 0.85rem;
