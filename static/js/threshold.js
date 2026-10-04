@@ -31,9 +31,11 @@ function thresholdImage(img) {
 }
 
 async function loadOriginal(original) {
-    if (original.dataset.loaded) return;
-    original.dataset.loaded = 'true';
-    original.src = original.dataset.src;
+    if (!original.dataset.src) return;
+    if (!original.src) {
+        original.src = original.dataset.src;
+        original.dataset.loaded = 'true';
+    }
     if (!original.complete) await original.decode().catch(() => {});
 }
 
@@ -118,6 +120,11 @@ function setupThresholdImages() {
         original.alt = img.alt || '';
         original.dataset.src = posterSrc;
         original.dataset.threshold = img.dataset.threshold || '20';
+        original.loading = 'lazy';
+        original.decoding = 'async';
+        original.fetchPriority = 'low';
+        original.src = posterSrc;
+        original.dataset.loaded = 'true';
         wrapper.appendChild(original);
 
         if (img.dataset.thresholdSrc) {
