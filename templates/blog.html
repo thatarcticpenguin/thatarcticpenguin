@@ -2,21 +2,7 @@
 
 {% block content %}
 <div class="container blog-main-page">
-    <div class="blog-heading-row">
-        <h1 style="font-family: 'Geist', sans-serif;">{{ section.title }}</h1>
-        {% set feed_link = get_url(path='blog/rss.xml', trailing_slash=false) %}
-        <a href="{{ feed_link }}" class="rss-copy-btn" id="rss-copy-btn" data-feed-url="{{ feed_link }}"
-           aria-label="Copy RSS feed link" title="Copy RSS feed link for your newsreader">
-            <svg class="rss-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <rect class="rss-bg" width="24" height="24" rx="5"></rect>
-                <g class="rss-glyph" fill="none" stroke-width="2.4" stroke-linecap="round">
-                    <path d="M6 11.5a6.5 6.5 0 0 1 6.5 6.5"></path>
-                    <path d="M6 6a12 12 0 0 1 12 12"></path>
-                </g>
-                <circle class="rss-dot" cx="7" cy="17" r="1.7"></circle>
-            </svg>
-        </a>
-    </div>
+    <h1 style="font-family: 'Geist', sans-serif;">{{ section.title }}</h1>
     <p class="friend-banners-label">friends webring</p>
     <div class="friend-banners">
         <a href="https://harsha.is-a.dev" target="_blank" rel="noopener"><img src="{{ get_url(path='button_harsha.png') }}" alt="harsha"></a>
@@ -89,56 +75,4 @@
 </div>
 
 <p class="built-with">built with <a href="https://www.getzola.org/" target="_blank" rel="noopener">zola</a></p>
-
-<script>
-(function () {
-    var btn = document.getElementById('rss-copy-btn');
-    if (!btn) return;
-    var timer;
-
-    function flash(text, cls) {
-        btn.setAttribute('title', text);
-        btn.classList.remove('copied', 'failed');
-        if (cls) btn.classList.add(cls);
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-            btn.setAttribute('title', 'Copy RSS feed link for your newsreader');
-            btn.classList.remove('copied', 'failed');
-        }, 2000);
-    }
-
-    function fallbackCopy(text) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.setAttribute('readonly', '');
-        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
-        document.body.appendChild(ta);
-        ta.select();
-        var ok = false;
-        try { ok = document.execCommand('copy'); } catch (e) {}
-        document.body.removeChild(ta);
-        return ok;
-    }
-
-    btn.addEventListener('click', function (e) {
-        // let ctrl/cmd/middle-click open the raw feed as a normal link
-        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
-        e.preventDefault();
-        var url = btn.getAttribute('data-feed-url');
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(url).then(
-                function () { flash('copied!', 'copied'); },
-                function () {
-                    if (fallbackCopy(url)) flash('copied!', 'copied');
-                    else flash('copy failed', 'failed');
-                }
-            );
-        } else if (fallbackCopy(url)) {
-            flash('copied!', 'copied');
-        } else {
-            flash('copy failed', 'failed');
-        }
-    });
-})();
-</script>
 {% endblock content %}

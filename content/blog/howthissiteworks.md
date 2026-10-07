@@ -1,6 +1,6 @@
 
 +++
-title = "How my site works"
+title = "How this site works"
 date = 2026-10-04
 
 [extra]

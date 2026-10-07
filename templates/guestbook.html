@@ -77,33 +77,23 @@
             'Flag': '<svg class="action-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" fill="none" stroke="currentColor" stroke-width="70" stroke-linecap="round" stroke-linejoin="round"><path d="M200 650V150c0-25 20-45 45-45h10c100 0 180 40 300 40 80 0 120-20 120-20v300s-40 20-120 20c-120 0-200-40-300-40h-10c-25 0-45 20-45 45z"/></svg>'
         };
 
-        var actionElements = box.querySelectorAll('.hcb-like, .hcb-reply, .hcb-flag');
+        var actionElements = box.querySelectorAll('.hcb-like, .hcb-reply, .hcb-flag, button, a');
         for (var k = 0; k < actionElements.length; k++) {
             var item = actionElements[k];
-            if (item.getAttribute('data-penguin-iconized') === '1') continue;
-
+            if (item.querySelector('svg.action-icon')) continue;
+            
+            var txt = (item.textContent || '').trim();
+            var href = item.getAttribute('href') || '';
+            var onclick = item.getAttribute('onclick') || '';
             var cls = item.className || '';
-            var key = cls.indexOf('hcb-like') !== -1 ? 'Like' :
-                      cls.indexOf('hcb-reply') !== -1 ? 'Reply' : 'Flag';
 
-            var iconWrap = document.createElement('span');
-            iconWrap.innerHTML = svgs[key];
-            var icon = iconWrap.firstElementChild;
-            if (!icon) continue;
-
-            var nodes = Array.prototype.slice.call(item.childNodes);
-            for (var n = 0; n < nodes.length; n++) {
-                var node = nodes[n];
-                if (node.nodeType === 3 && node.nodeValue.trim()) {
-                    var label = document.createElement('span');
-                    label.className = 'hcb-action-label';
-                    label.textContent = node.nodeValue;
-                    node.parentNode.replaceChild(label, node);
-                }
+            if (cls.indexOf('hcb-like') !== -1 || /like/i.test(txt) || /like/i.test(href) || /like/i.test(onclick)) {
+                item.innerHTML = svgs['Like'];
+            } else if (cls.indexOf('hcb-reply') !== -1 || /reply/i.test(txt) || /reply/i.test(href) || /reply/i.test(onclick)) {
+                item.innerHTML = svgs['Reply'];
+            } else if (cls.indexOf('hcb-flag') !== -1 || /flag/i.test(txt) || /flag/i.test(href) || /flag/i.test(onclick)) {
+                item.innerHTML = svgs['Flag'];
             }
-
-            item.insertBefore(icon, item.firstChild);
-            item.setAttribute('data-penguin-iconized', '1');
         }
     }, 200);
 })();

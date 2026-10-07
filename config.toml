@@ -11,7 +11,6 @@ title = "That Arctic Penguin"
 description = "Developer, ice cream enthusiast, and penguin lover. This is the personal site of Sabareesh Vinodh."
 default_language = "en"
 generate_feeds = true
-feed_filenames = ["rss.xml"]
 taxonomies = [
     { name = "tags", feed = true }
 ]
