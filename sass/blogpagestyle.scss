@@ -115,7 +115,8 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 10000;
+    isolation: isolate;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -640,6 +641,28 @@ a.blog-inline-tag {
 }
 
 @media (max-width: 768px) {
+    nav {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100% !important;
+        height: 64px;
+        margin: 0 !important;
+        padding: 0 1.2rem;
+        background: var(--bg-color);
+        z-index: 1100;
+    }
+
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 72px;
+        right: 1rem;
+        z-index: 1099;
+    }
+}
+
+@media (max-width: 768px) {
     .desktop-links {
         display: none !important;
     }
@@ -649,7 +672,8 @@ a.blog-inline-tag {
     }
 
     body {
-        padding: 4.8rem 0.8rem 0.8rem;
+        padding: 6rem 0.8rem 0.8rem;
+        overflow-x: hidden;
     }
 
     h1 {
@@ -664,6 +688,7 @@ a.blog-inline-tag {
     .blog-content {
         padding: 0.8rem;
     }
+
 }
 
 @media (max-width: 480px) {
@@ -1429,6 +1454,61 @@ img.threshold-hover.processed {
 }
 
 /* Fade-only view transition for guestbook page */
+@media (max-width: 768px) {
+    .guestbook-page {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .guestbook-subtitle {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    #HCB_comment_box,
+    #HCB_comment_box * {
+        max-width: 100%;
+    }
+
+    #HCB_comment_box blockquote,
+    #HCB_comment_box .hcb-comment {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    /* Keep the fixed header above the guestbook without letting the HCB widget
+       create a wider layout or slide the page underneath the header. */
+    body:has(.guestbook-page) {
+        overflow-x: clip;
+    }
+
+    .guestbook-page,
+    #comments-container,
+    #HCB_comment_box,
+    #HCB_comment_box form,
+    #HCB_comment_box table,
+    #HCB_comment_box tbody,
+    #HCB_comment_box tr,
+    #HCB_comment_box td {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    #HCB_comment_box * {
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .guestbook-page {
+        position: relative;
+        z-index: 1;
+        padding-top: 0.75rem;
+    }
+}
+
 html.blogpage:has(.guestbook-page)::view-transition-new(root) {
     mask-image: none !important;
     -webkit-mask-image: none !important;

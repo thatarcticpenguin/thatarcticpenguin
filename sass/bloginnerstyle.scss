@@ -539,6 +539,28 @@ h2, h3, h4 {
 }
 
 @media (max-width: 768px) {
+    nav {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100% !important;
+        height: 64px;
+        margin: 0 !important;
+        padding: 0 1.2rem;
+        background: var(--bg-color);
+        z-index: 1100;
+    }
+
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 72px;
+        right: 1rem;
+        z-index: 1099;
+    }
+}
+
+@media (max-width: 768px) {
     .desktop-links {
         display: none !important;
     }

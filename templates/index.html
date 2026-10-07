@@ -160,8 +160,6 @@
 
         .homepage-banner {
             position: absolute;
-            /* anchor by the bottom edge so it always sits above the title,
-               regardless of image height or load timing */
             bottom: calc(100% - 28px);
             left: calc(100% + 64px);
             width: 544px;
@@ -242,6 +240,26 @@
         }
 
         @media (max-width: 768px) {
+            nav:not(.socials) {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                width: 100% !important;
+                height: 64px;
+                padding: 0 1.2rem;
+                margin: 0 !important;
+                background: var(--bg-color);
+                z-index: 1100;
+            }
+
+            .mobile-menu-overlay {
+                position: fixed;
+                top: 72px;
+                right: 1rem;
+                z-index: 1099;
+            }
+
             html, body {
                 overflow-x: hidden;
             }
@@ -263,7 +281,7 @@
                 align-items: center;
             }
             .profile-container {
-                display: flex;
+                display: contents;
                 flex-direction: column;
                 align-items: center;
                 gap: 1.2rem;
@@ -275,16 +293,19 @@
             .profile-pic {
                 margin-left: 0;
             }
-            .socials {
-                position: static;
-                width: 100%;
-                height: auto;
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 0.8rem;
-                margin-top: 1rem;
+            .profile-container > .socials {
+                position: relative !important;
+                inset: auto !important;
+                width: 100% !important;
+                height: auto !important;
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 0.8rem !important;
+                margin: 1rem 0 0 !important;
+                padding: 0 !important;
             }
             .socials a {
                 position: relative;
@@ -313,9 +334,10 @@
                 transform: none;
                 width: 100%;
                 max-width: 400px;
-                margin: 0 auto;
+                margin: 2rem auto 0;
                 display: block;
                 z-index: auto;
+                order: 3;
             }
             .homepage-copy {
                 position: static;
@@ -334,17 +356,28 @@
                 max-width: 85vw;
                 max-height: 85vw;
             }
-            .socials {
-                position: static;
-                width: 100%;
-                height: auto;
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 0.8rem;
-                margin-top: 1rem;
-                order: 1;
+            .profile-container > .socials {
+                position: relative !important;
+                inset: auto !important;
+                top: auto !important;
+                right: auto !important;
+                bottom: auto !important;
+                left: auto !important;
+                transform: none !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 36px !important;
+                display: flex !important;
+                flex: 0 0 auto !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 0.8rem !important;
+                margin: 1rem 0 0 !important;
+                padding: 0 !important;
+                z-index: 101 !important;
             }
             .homepage-title {
                 white-space: normal;
